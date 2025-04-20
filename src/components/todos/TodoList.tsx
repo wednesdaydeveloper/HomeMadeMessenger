@@ -1,11 +1,14 @@
 import { useAtom } from 'jotai'
-import { todoListState } from './State'
+import { filteredToListAtom } from './State'
 import TodoItem from './TodoItem'
+import Filter from './Filter'
 
 const TodoList = () => {
-  const [todos] = useAtom(todoListState)
+  const [todos] = useAtom(filteredToListAtom)
   return (
     <div>
+      <Filter />
+
       {todos.map((atom, index) => {
         return <TodoItem key={index} atom={atom} />
       })}
