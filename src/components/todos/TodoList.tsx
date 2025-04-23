@@ -31,17 +31,18 @@ const TodoList = () => {
     e.preventDefault()
     const title = e.currentTarget.inputTitle.value
     e.currentTarget.inputTitle.value = ''
-    setTodoList((prev) => [...prev, atom<Todo>({ title, completed: false , todoid: uuidv4()})])
+    setTodoList((prev) => [...prev, atom<Todo>({ title, completed: false, todoid: uuidv4() })])
   }
 
   return (
-    <form onSubmit={add}>
+    <form onSubmit={add} className="flex flex-col w-1/2 mx-auto">
       <Filter />
       <input name="inputTitle" placeholder="Type ..." />
-
-      {filterdTodoList.map((atom, index) => {
-        return <TodoItem key={index} atom={atom} />
-      })}
+      <div>
+        {filterdTodoList.map((atom, index) => {
+          return <TodoItem key={index} atom={atom} />
+        })}
+      </div>
     </form>
   )
 }

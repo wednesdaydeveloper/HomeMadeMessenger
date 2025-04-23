@@ -13,17 +13,17 @@ const TodoItem = ({ atom }: TodoItemProps) => {
     setTodo((props) => ({ ...props, completed: !props.completed }))
 
   return (
-    <>
-        <input
-          type="checkbox"
-          checked={todo.completed}
-          onChange={toggleCompleted}
-        />
+    <div className="p-1 m-1 border border-slate-500">
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={toggleCompleted}
+      />
 
       <span key={todo.todoid}>
         {todo.title}
       </span>
-    </>
+    </div>
   )
 }
 
