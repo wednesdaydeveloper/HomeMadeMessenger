@@ -6,7 +6,7 @@ import { Radio } from 'antd'
 const Filter = () => {
   const [filter, set] = useAtom(filterAtom)
   return (
-    <Radio.Group onChange={(e) => set(parseInt(e.target.value))} value={filter.toString()}>
+    <Radio.Group onChange={(e) => set(parseInt(e.target.value))} value={filter.toString()} className="w-full text-center">
       <Radio value="1">All</Radio>
       <Radio value="2">Completed</Radio>
       <Radio value="3">Incompleted</Radio>

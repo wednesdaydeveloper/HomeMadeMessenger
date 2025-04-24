@@ -35,15 +35,17 @@ const TodoList = () => {
   }
 
   return (
-    <form onSubmit={add} className="flex flex-col w-1/2 mx-auto">
-      <Filter />
-      <input name="inputTitle" placeholder="Type ..." />
+    <div className="w-1/2 mx-auto">
+      <form onSubmit={add}>
+        <Filter />
+        <input name="inputTitle" placeholder="Type ..." className="w-full"/>
+      </form>
       <div>
         {filterdTodoList.map((atom, index) => {
           return <TodoItem key={index} atom={atom} />
         })}
       </div>
-    </form>
+    </div>
   )
 }
 
