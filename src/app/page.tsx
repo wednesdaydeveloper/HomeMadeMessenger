@@ -11,9 +11,7 @@ export default function Home() {
     <div>
       <StrictMode>
         <Provider>
-          <Suspense fallback={<h2>Loading...</h2>}>
-            <TodoList />
-          </Suspense>
+          <TodoList />
         </Provider>
       </StrictMode>
     </div>

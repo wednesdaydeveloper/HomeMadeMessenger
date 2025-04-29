@@ -1,9 +1,10 @@
 'use client'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { FormEvent } from 'react'
-import { addTodoListAtom, filteredToListAtom } from './State'
-import TodoItem from './TodoItem'
+import { atom, useSetAtom } from 'jotai'
+import { FormEvent, Suspense } from 'react'
+import { addTodoListAtom } from './State'
+import { Todo } from './Models'
 import Filter from './Filter'
+import ItemList from './ItemList'
 
 /**
  * Todoリストを表示・管理するコンポーネント
@@ -14,7 +15,6 @@ import Filter from './Filter'
  * - 各Todoアイテムは独立したatomとして管理
  */
 const TodoList = () => {
-  const filterdTodoList = useAtomValue(filteredToListAtom)
   const addTodoList = useSetAtom(addTodoListAtom)
 
   /**
@@ -30,19 +30,19 @@ const TodoList = () => {
     e.preventDefault()
     const name = e.currentTarget.inputTitle.value
     e.currentTarget.inputTitle.value = ''
-    addTodoList(atom({ name, completed: false, id: undefined}))
+    addTodoList(atom<Todo>({ name, completed: false, id: undefined }))
   }
 
   return (
-    <form onSubmit={add} className="flex flex-col w-1/2 mx-auto">
+    <div className="flex flex-col w-1/2 mx-auto">
       <Filter />
-      <input name="inputTitle" placeholder="Type ..." />
-      <div>
-        {filterdTodoList.map((todoItemAtom, index) => {
-          return <TodoItem key={index} todoItemAtom={todoItemAtom} />
-        })}
-      </div>
-    </form>
+      <form onSubmit={add}>
+        <input name="inputTitle" placeholder="Type ..." />
+      </form>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <ItemList />
+      </Suspense>
+    </div>
   )
 }
 
