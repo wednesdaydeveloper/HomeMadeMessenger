@@ -21,7 +21,7 @@ const TodoItem = ({ todoItemAtom }: TodoItemProps) => {
       />
 
       <span key={todo.id}>
-        {todo.name}
+        {todo.content}
       </span>
     </div>
   )

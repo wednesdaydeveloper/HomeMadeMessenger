@@ -1,4 +1,4 @@
-import { StrictMode, Suspense } from 'react'
+import { StrictMode } from 'react'
 import { Provider, createStore } from 'jotai';
 import { countState } from '@/components/counter/State';
 import TodoList from '@/components/todos/TodoList';

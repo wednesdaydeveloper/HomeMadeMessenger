@@ -1,8 +1,7 @@
 'use client'
-import { atom, useSetAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { FormEvent, Suspense } from 'react'
 import { addTodoListAtom } from './State'
-import { Todo } from './Models'
 import Filter from './Filter'
 import ItemList from './ItemList'
 
@@ -28,9 +27,9 @@ const TodoList = () => {
    */
   const add = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const name = e.currentTarget.inputTitle.value
+    const content = e.currentTarget.inputTitle.value
     e.currentTarget.inputTitle.value = ''
-    addTodoList(atom<Todo>({ name, completed: false, id: undefined }))
+    addTodoList(content)
   }
 
   return (
