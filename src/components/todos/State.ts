@@ -1,23 +1,31 @@
 import { atom } from 'jotai';
 import type { PrimitiveAtom } from 'jotai'
 import { FilterType, type Todo } from './Models'
-import { v4 as uuidv4 } from "uuid";
+import { createClient } from '@/utils/supabase/client'
 
-export const todoListAtom = atom<PrimitiveAtom<Todo>[]>([
-  atom({ title: 'test1', todoid: uuidv4(), completed: false }),
-  atom({ title: 'test2', todoid: uuidv4(), completed: true }),
-  atom({ title: 'test3', todoid: uuidv4(), completed: false }),
-]);
+export const todoListAtom = atom<Promise<PrimitiveAtom<Todo>[]>>(
+  async (get) => {
+    const supabase = createClient()
+    const { data: todos, error } = await supabase.from("todos").select();
+    if (error) {
+      return [];
+    } else {
+      const list = todos.map(todo => (atom({ name: todo.name, id: todo.id, completed: todo.completed })))
+      console.log("list todolist: " + JSON.stringify(list))
+      return list;
+    }
+  }
+)
 
-export const filterAtom = atom(FilterType.Completed)
+export const filterAtom = atom(FilterType.All)
 
-export const filteredToListAtom = atom<PrimitiveAtom<Todo>[]>(
-  (get) => {
+export const filteredToListAtom = atom(
+  async (get) => {
     const filter = get(filterAtom)
-    const todoList = get(todoListAtom)
+    const todoList = await get(todoListAtom)
     if (filter === FilterType.All) {
       return todoList
-    } 
+    }
     else if (filter === FilterType.Completed) {
       return todoList.filter((atom) => get(atom).completed)
     }

@@ -1,10 +1,9 @@
-import { atom, useAtomValue, useSetAtom } from 'jotai'
+'use client'
+import { useAtomValue } from 'jotai'
 import { FormEvent } from 'react'
-import { v4 as uuidv4 } from "uuid";
-import { filteredToListAtom, todoListAtom } from './State'
+import { filteredToListAtom } from './State'
 import TodoItem from './TodoItem'
 import Filter from './Filter'
-import { Todo } from './Models'
 
 /**
  * Todoリストを表示・管理するコンポーネント
@@ -16,8 +15,6 @@ import { Todo } from './Models'
  */
 const TodoList = () => {
   const filterdTodoList = useAtomValue(filteredToListAtom)
-  const setTodoList = useSetAtom(todoListAtom)
-
   /**
    * 新しいTodoアイテムを追加する
    * @param e フォームのサブミットイベント
@@ -31,7 +28,6 @@ const TodoList = () => {
     e.preventDefault()
     const title = e.currentTarget.inputTitle.value
     e.currentTarget.inputTitle.value = ''
-    setTodoList((prev) => [...prev, atom<Todo>({ title, completed: false, todoid: uuidv4() })])
   }
 
   return (
@@ -39,8 +35,8 @@ const TodoList = () => {
       <Filter />
       <input name="inputTitle" placeholder="Type ..." />
       <div>
-        {filterdTodoList.map((atom, index) => {
-          return <TodoItem key={index} atom={atom} />
+        {filterdTodoList.map((todoItemAtom, index) => {
+          return <TodoItem key={index} todoItemAtom={todoItemAtom} />
         })}
       </div>
     </form>
