@@ -1,7 +1,7 @@
 'use client'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { FormEvent } from 'react'
-import { filteredToListAtom } from './State'
+import { addTodoListAtom, filteredToListAtom } from './State'
 import TodoItem from './TodoItem'
 import Filter from './Filter'
 
@@ -15,6 +15,8 @@ import Filter from './Filter'
  */
 const TodoList = () => {
   const filterdTodoList = useAtomValue(filteredToListAtom)
+  const addTodoList = useSetAtom(addTodoListAtom)
+
   /**
    * 新しいTodoアイテムを追加する
    * @param e フォームのサブミットイベント
@@ -26,8 +28,9 @@ const TodoList = () => {
    */
   const add = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const title = e.currentTarget.inputTitle.value
+    const name = e.currentTarget.inputTitle.value
     e.currentTarget.inputTitle.value = ''
+    addTodoList(atom({ name, completed: false, id: undefined}))
   }
 
   return (

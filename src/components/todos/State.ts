@@ -3,17 +3,50 @@ import type { PrimitiveAtom } from 'jotai'
 import { FilterType, type Todo } from './Models'
 import { createClient } from '@/utils/supabase/client'
 
-export const todoListAtom = atom<Promise<PrimitiveAtom<Todo>[]>>(
+type TodoAtomType = PrimitiveAtom<Todo>
+type InternalTodoAtomListType = TodoAtomType[] | undefined
+type TodoListType = TodoAtomType[]
+
+const internalTodoListAtom = atom<InternalTodoAtomListType>(undefined)
+
+
+export const todoListAtom = atom<Promise<TodoListType>>(
   async (get) => {
-    const supabase = createClient()
-    const { data: todos, error } = await supabase.from("todos").select();
-    if (error) {
-      return [];
-    } else {
-      const list = todos.map(todo => (atom({ name: todo.name, id: todo.id, completed: todo.completed })))
-      console.log("list todolist: " + JSON.stringify(list))
-      return list;
+    const internalTodoList = get(internalTodoListAtom);
+    if (internalTodoList === undefined) {
+      const supabase = createClient()
+      const { data: todos, error } = await supabase.from("todos").select();
+      if (error) {
+        return [] as PrimitiveAtom<Todo>[];
+      } else {
+        const list = todos.map(todo => atom<Todo>({ 
+          name: todo.name, 
+          id: todo.id, 
+          completed: todo.completed 
+        }))
+        console.log("list: " + JSON.stringify(list))
+        return list;
+      }
     }
+    else {
+      console.log("internalTodoList: " + JSON.stringify(internalTodoList))
+      return internalTodoList;
+    }
+  }
+)
+
+export const addTodoListAtom = atom(
+  null,
+  (get, set, update: TodoAtomType) => {
+    set(internalTodoListAtom, async (prev: InternalTodoAtomListType) => {
+      if (prev === undefined) {
+        const list = await get(todoListAtom)
+        return [...list, update]
+      }
+      else {
+        return [...prev, update]
+      }
+    })
   }
 )
 
