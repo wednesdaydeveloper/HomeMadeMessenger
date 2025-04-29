@@ -37,16 +37,14 @@ export const todoListAtom = atom<Promise<TodoListType>>(
 
 export const addTodoListAtom = atom(
   null,
-  (get, set, update: TodoAtomType) => {
-    set(internalTodoListAtom, async (prev: InternalTodoAtomListType) => {
-      if (prev === undefined) {
-        const list = await get(todoListAtom)
-        return [...list, update]
-      }
-      else {
-        return [...prev, update]
-      }
-    })
+  async (get, set, update: TodoAtomType) => {
+    const prev = get(internalTodoListAtom);
+    if (prev === undefined) {
+      const list = await get(todoListAtom);
+      set(internalTodoListAtom, [...list, update]);
+    } else {
+      set(internalTodoListAtom, [...prev, update]);
+    }
   }
 )
 
