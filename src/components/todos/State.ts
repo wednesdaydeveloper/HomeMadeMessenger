@@ -1,4 +1,4 @@
-import { atom, Getter, Setter } from 'jotai';
+import { atom } from 'jotai';
 import type { PrimitiveAtom } from 'jotai'
 import { FilterType, type Todo } from './Models'
 import { createClient } from '@/utils/supabase/client'
@@ -20,7 +20,7 @@ export const todoListAtom = atom<Promise<TodoListType>>(
         .order('id')
       if (error) {
         console.log("error: " + JSON.stringify(error))
-        return [] as PrimitiveAtom<Todo>[];
+        return []
       } else {
         const list = todos.map(todo => atomWithTodo({
           content: todo.content,
@@ -28,7 +28,7 @@ export const todoListAtom = atom<Promise<TodoListType>>(
           completed: todo.completed
         }))
         console.log("list: " + JSON.stringify(list))
-        return list;
+        return list as TodoListType;
       }
     }
     else {
@@ -37,21 +37,23 @@ export const todoListAtom = atom<Promise<TodoListType>>(
   }
 )
 
-const atomWithTodo = (itinialTodo: Todo) => {
-  const todoAtom = atom<Todo>(itinialTodo)
-  return atom<Todo>(
-    (get: Getter) => get(todoAtom),
-    async (_get, set: Setter, todo: Todo) => {
+const atomWithTodo = (initialTodo: Todo) => {
+  const todoAtom = atom<Todo>(initialTodo)
+  return atom(
+    (get) => get(todoAtom),
+    (_get, set, todo: Todo) => {
       const supabase = createClient()
-      const {error} = await supabase
+      supabase
         .from("todos")
         .update({ completed: todo.completed })
         .eq('id', todo.id)
-      if (error) {
-        console.log("error: " + JSON.stringify(error))
-      }
-      console.log("todo: " + JSON.stringify(todo))
-      set(todoAtom, todo)
+        .then(({error}) => {
+          if (error) {
+            console.log("error: " + JSON.stringify(error))
+          }
+          console.log("todo: " + JSON.stringify(todo))
+          set(todoAtom, todo)
+        })
     }
   )
 }
@@ -67,7 +69,7 @@ export const addTodoListAtom = atom(
     if (error) {
       console.log("error: " + JSON.stringify(error))
     } else {
-      const newAtom = atomWithTodo({content, id: data[0].id, completed: false})
+      const newAtom = atomWithTodo({content, id: data[0].id, completed: false}) as TodoAtomType
       const prev = get(internalTodoListAtom)
       const list = prev === undefined
         ? await get(todoListAtom)
