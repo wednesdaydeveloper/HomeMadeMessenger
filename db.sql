@@ -25,4 +25,5 @@ with check (true);
 create policy "public can update todos"
 on "public"."todos"
 for update to anon
+using (true)
 with check (true);

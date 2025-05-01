@@ -10,7 +10,7 @@ const TodoItem = ({ todoItemAtom }: TodoItemProps) => {
   const [todo, setTodo] = useAtom(todoItemAtom)
 
   const toggleCompleted = () =>
-    setTodo((props) => ({ ...props, completed: !props.completed }))
+    setTodo({ ...todo, completed: !todo.completed })
 
   return (
     <div className="p-1 m-1 border border-slate-500">
