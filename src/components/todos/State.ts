@@ -2,18 +2,20 @@ import { atom } from 'jotai';
 import type { PrimitiveAtom } from 'jotai'
 import { FilterType, type Todo } from './Models'
 import { createClient } from '@/utils/supabase/client'
+import { atomWithReset, atomWithRefresh } from 'jotai/utils';
 
 type TodoAtomType = PrimitiveAtom<Todo>
 type InternalTodoAtomListType = TodoAtomType[] | undefined
 type TodoListType = TodoAtomType[]
 
-const internalTodoListAtom = atom<InternalTodoAtomListType>(undefined)
+const supabase = createClient()
 
-export const todoListAtom = atom<Promise<TodoListType>>(
+export const internalTodoListAtom = atomWithReset<InternalTodoAtomListType>(undefined)
+
+export const todoListAtom = atomWithRefresh<Promise<TodoListType>>(
   async (get) => {
     const internalTodoList = get(internalTodoListAtom);
     if (internalTodoList === undefined) {
-      const supabase = createClient()
       const { data: todos, error } = await supabase
         .from("todos")
         .select()
@@ -42,7 +44,6 @@ const atomWithTodo = (initialTodo: Todo) => {
   return atom(
     (get) => get(todoAtom),
     (_get, set, todo: Todo) => {
-      const supabase = createClient()
       supabase
         .from("todos")
         .update({ completed: todo.completed })
@@ -61,7 +62,6 @@ const atomWithTodo = (initialTodo: Todo) => {
 export const addTodoListAtom = atom(
   null,
   async (get, set, content: string) => {
-    const supabase = createClient()
     const { data, error } = await supabase
       .from('todos')
       .upsert({ id: undefined, content })
@@ -96,3 +96,12 @@ export const filteredTodoListAtom = atom(
     }
   }
 )
+
+export const subscribeChannel = (refresh: (payload: any) => void) => {
+  return supabase
+      .channel('schema-db-changes')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'todos' }, refresh)
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'todos' }, refresh)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'todos' }, refresh)
+      .subscribe()
+}

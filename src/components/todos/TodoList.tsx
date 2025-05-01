@@ -1,9 +1,10 @@
 'use client'
 import { useSetAtom } from 'jotai'
-import { FormEvent, Suspense } from 'react'
-import { addTodoListAtom } from './State'
+import { FormEvent, Suspense, useEffect } from 'react'
+import { addTodoListAtom, internalTodoListAtom, subscribeChannel, todoListAtom } from './State'
 import Filter from './Filter'
 import ItemList from './ItemList'
+import { useResetAtom } from 'jotai/utils'
 
 /**
  * Todoリストを表示・管理するコンポーネント
@@ -15,7 +16,21 @@ import ItemList from './ItemList'
  */
 const TodoList = () => {
   const addTodoList = useSetAtom(addTodoListAtom)
-
+  const resetInternalTodoList = useResetAtom(internalTodoListAtom)
+  const refreshTodoList = useSetAtom(todoListAtom)
+  const refresh = (payload: any) => {
+    console.log(payload)
+    resetInternalTodoList()
+    refreshTodoList()
+  } 
+  useEffect(() => {
+    const channelA = subscribeChannel(refresh)
+    console.log("subscribe")
+    return () => {
+      channelA.unsubscribe();
+      console.log("unsubscribe")
+    }
+  }, [])
   /**
    * 新しいTodoアイテムを追加する
    * @param e フォームのサブミットイベント
