@@ -40,3 +40,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 https://github.com/supabase/supabase/tree/master/examples/slack-clone/nextjs-slack-clone
 
 https://zenn.dev/uhyo/articles/jotai-v2-async-sometimes
+
+https://vercel.com/wednesdaydevelopers-projects/home-made-messenger
