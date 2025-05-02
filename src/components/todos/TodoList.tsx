@@ -1,50 +1,55 @@
-import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { FormEvent } from 'react'
-import { v4 as uuidv4 } from "uuid";
-import { filteredToListAtom, todoListAtom } from './State'
-import TodoItem from './TodoItem'
+'use client'
+import { useSetAtom } from 'jotai'
+import { FormEvent, Suspense, useEffect } from 'react'
+import { addTodoListAtom, internalTodoListAtom, subscribeChannel, todoListAtom } from './State'
 import Filter from './Filter'
-import { Todo } from './Models'
+import ItemList from './ItemList'
+import { useResetAtom } from 'jotai/utils'
 
 /**
- * Todoリストを表示・管理するコンポーネント
+ * Todoリストを表示・管理するコンポーネントです。
+ * 
  * @description
- * - フィルター機能付きのTodoリストを表示
- * - 新しいTodoアイテムの追加機能を提供
- * - Jotaiを使用した状態管理
- * - 各Todoアイテムは独立したatomとして管理
+ * - フィルター機能付きのTodoリストを表示します
+ * - 新しいTodoアイテムの追加機能を提供します
+ * - Jotaiを使用した状態管理を行います
+ * - 各Todoアイテムは独立したatomとして管理されます
+ * - リアルタイムでTodoリストの同期を行います
  */
 const TodoList = () => {
-  const filterdTodoList = useAtomValue(filteredToListAtom)
-  const setTodoList = useSetAtom(todoListAtom)
+  const addTodoList = useSetAtom(addTodoListAtom)
+  const resetInternalTodoList = useResetAtom(internalTodoListAtom)
+  const refreshTodoList = useSetAtom(todoListAtom)
+  const refresh = (payload: any) => {
+    console.log(payload)
+    resetInternalTodoList()
+    refreshTodoList()
+  } 
+  useEffect(() => {
+    const channelA = subscribeChannel(refresh)
+    console.log("subscribe")
+    return () => {
+      channelA.unsubscribe();
+      console.log("unsubscribe")
+    }
+  }, [])
 
-  /**
-   * 新しいTodoアイテムを追加する
-   * @param e フォームのサブミットイベント
-   * @description
-   * 1. フォームのデフォルト動作を防止
-   * 2. 入力されたタイトルを取得
-   * 3. 入力フィールドをクリア
-   * 4. 新しいTodoアイテムをリストに追加（UUIDを生成して完了状態はfalse）
-   */
   const add = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const title = e.currentTarget.inputTitle.value
+    const content = e.currentTarget.inputTitle.value
     e.currentTarget.inputTitle.value = ''
-    setTodoList((prev) => [...prev, atom<Todo>({ title, completed: false, todoid: uuidv4() })])
+    addTodoList(content)
   }
 
   return (
-    <div className="w-1/2 mx-auto">
+    <div className="flex flex-col w-1/2 mx-auto">
+      <Filter />
       <form onSubmit={add}>
-        <Filter />
-        <input name="inputTitle" placeholder="Type ..." className="w-full"/>
+        <input name="inputTitle" placeholder="Type ..." />
       </form>
-      <div>
-        {filterdTodoList.map((atom, index) => {
-          return <TodoItem key={index} atom={atom} />
-        })}
-      </div>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <ItemList />
+      </Suspense>
     </div>
   )
 }

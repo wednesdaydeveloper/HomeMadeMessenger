@@ -3,14 +3,14 @@ import { Todo } from './Models'
 import React from 'react'
 
 export type TodoItemProps = {
-  atom: PrimitiveAtom<Todo>
+  todoItemAtom: PrimitiveAtom<Todo>
 }
 
-const TodoItem = ({ atom }: TodoItemProps) => {
-  const [todo, setTodo] = useAtom(atom)
+const TodoItem = ({ todoItemAtom }: TodoItemProps) => {
+  const [todo, setTodo] = useAtom(todoItemAtom)
 
   const toggleCompleted = () =>
-    setTodo((props) => ({ ...props, completed: !props.completed }))
+    setTodo({ ...todo, completed: !todo.completed })
 
   return (
     <div className="p-1 m-1 border border-slate-500">
@@ -20,8 +20,8 @@ const TodoItem = ({ atom }: TodoItemProps) => {
         onChange={toggleCompleted}
       />
 
-      <span key={todo.todoid}>
-        {todo.title}
+      <span key={todo.id}>
+        {todo.content}
       </span>
     </div>
   )
