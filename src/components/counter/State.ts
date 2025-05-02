@@ -1,5 +1,3 @@
-
-
 import { atom } from 'jotai';
 
 // 引数が初期値になります
