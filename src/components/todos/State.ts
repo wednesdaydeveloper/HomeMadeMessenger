@@ -3,6 +3,7 @@ import type { PrimitiveAtom } from 'jotai'
 import { FilterType, type Todo } from './Models'
 import { createClient } from '@/utils/supabase/client'
 import { atomWithReset, atomWithRefresh } from 'jotai/utils';
+import { RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 
 /**
  * TodoアイテムのPrimitiveAtom型を表す型定義です。
@@ -159,7 +160,7 @@ export const filteredTodoListAtom = atom(
  * @param refresh - データベースの変更時に実行されるコールバック関数
  * @returns Supabaseのチャンネルサブスクリプション
  */
-export const subscribeChannel = (refresh: (payload: any) => void) => {
+export const subscribeChannel = (refresh: (payload: RealtimePostgresChangesPayload<Todo>) => void) => {
   return supabase
       .channel('schema-db-changes')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'todos' }, refresh)
