@@ -5,6 +5,8 @@ import { addTodoListAtom, internalTodoListAtom, subscribeChannel, todoListAtom }
 import Filter from './Filter'
 import ItemList from './ItemList'
 import { useResetAtom } from 'jotai/utils'
+import { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
+import { Todo } from './Models'
 
 /**
  * Todoリストを表示・管理するコンポーネントです。
@@ -20,11 +22,12 @@ const TodoList = () => {
   const addTodoList = useSetAtom(addTodoListAtom)
   const resetInternalTodoList = useResetAtom(internalTodoListAtom)
   const refreshTodoList = useSetAtom(todoListAtom)
-  const refresh = (payload: any) => {
+  const refresh = (payload: RealtimePostgresChangesPayload<Todo>)  => {
     console.log(payload)
     resetInternalTodoList()
     refreshTodoList()
-  } 
+  }
+
   useEffect(() => {
     const channelA = subscribeChannel(refresh)
     console.log("subscribe")
