@@ -7,12 +7,14 @@ import ItemList from './ItemList'
 import { useResetAtom } from 'jotai/utils'
 
 /**
- * Todoリストを表示・管理するコンポーネント
+ * Todoリストを表示・管理するコンポーネントです。
+ * 
  * @description
- * - フィルター機能付きのTodoリストを表示
- * - 新しいTodoアイテムの追加機能を提供
- * - Jotaiを使用した状態管理
- * - 各Todoアイテムは独立したatomとして管理
+ * - フィルター機能付きのTodoリストを表示します
+ * - 新しいTodoアイテムの追加機能を提供します
+ * - Jotaiを使用した状態管理を行います
+ * - 各Todoアイテムは独立したatomとして管理されます
+ * - リアルタイムでTodoリストの同期を行います
  */
 const TodoList = () => {
   const addTodoList = useSetAtom(addTodoListAtom)
@@ -31,15 +33,7 @@ const TodoList = () => {
       console.log("unsubscribe")
     }
   }, [])
-  /**
-   * 新しいTodoアイテムを追加する
-   * @param e フォームのサブミットイベント
-   * @description
-   * 1. フォームのデフォルト動作を防止
-   * 2. 入力されたタイトルを取得
-   * 3. 入力フィールドをクリア
-   * 4. 新しいTodoアイテムをリストに追加（UUIDを生成して完了状態はfalse）
-   */
+
   const add = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const content = e.currentTarget.inputTitle.value
