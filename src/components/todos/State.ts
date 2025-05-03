@@ -28,12 +28,6 @@ type InternalTodoAtomListType = TodoAtomType[] | undefined
 type TodoListType = TodoAtomType[]
 
 /**
- * Supabaseクライアントのインスタンスを作成します。
- * このクライアントを使用してTodoデータの読み書きを行います。
- */
-const supabase = createClient()
-
-/**
  * Todoリストの内部状態を管理するatomです。
  * atomWithResetを使用することで、状態を初期値(undefined)にリセットすることができます。
  * このatomはtodoListAtomによって参照され、Todoリストのキャッシュとして機能します。
@@ -51,6 +45,7 @@ export const todoListAtom = atomWithRefresh<Promise<TodoListType>>(
   async (get) => {
     const internalTodoList = get(internalTodoListAtom);
     if (internalTodoList === undefined) {
+      const supabase = createClient()
       const { data: todos, error } = await supabase
         .from("todos")
         .select()
@@ -80,11 +75,12 @@ export const todoListAtom = atomWithRefresh<Promise<TodoListType>>(
  * @param initialTodo - 初期Todo値
  * @returns Todoの読み取り/更新が可能なatom
  */
-const atomWithTodo = (initialTodo: Todo) => {
+export const atomWithTodo = (initialTodo: Todo) => {
   const todoAtom = atom<Todo>(initialTodo)
   return atom(
     (get) => get(todoAtom),
     (_get, set, todo: Todo) => {
+      const supabase = createClient()
       supabase
         .from("todos")
         .update({ completed: todo.completed })
@@ -93,8 +89,10 @@ const atomWithTodo = (initialTodo: Todo) => {
           if (error) {
             console.log("error: " + JSON.stringify(error))
           }
-          console.log("todo: " + JSON.stringify(todo))
-          set(todoAtom, todo)
+          else {
+            console.log("todo: " + JSON.stringify(todo))
+            set(todoAtom, todo)
+          }
         })
     }
   )
@@ -108,6 +106,7 @@ const atomWithTodo = (initialTodo: Todo) => {
 export const addTodoListAtom = atom(
   null,
   async (get, set, content: string) => {
+    const supabase = createClient()
     const { data, error } = await supabase
       .from('todos')
       .upsert({ id: undefined, content })
@@ -161,6 +160,7 @@ export const filteredTodoListAtom = atom(
  * @returns Supabaseのチャンネルサブスクリプション
  */
 export const subscribeChannel = (refresh: (payload: RealtimePostgresChangesPayload<Todo>) => void) => {
+  const supabase = createClient()
   return supabase
       .channel('schema-db-changes')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'todos' }, refresh)
