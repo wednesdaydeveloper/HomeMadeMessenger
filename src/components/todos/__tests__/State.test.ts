@@ -4,7 +4,6 @@ import { createClient } from '@/utils/supabase/client'
 import { todoListAtom, addTodoListAtom, internalTodoListAtom, atomWithTodo, filteredTodoListAtom, filterAtom, subscribeChannel } from '@/components/todos/State'
 import { atom, createStore, PrimitiveAtom } from 'jotai'
 import { FilterType, Todo } from '../Models'
-import { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 
 describe('State.ts Supabase Mock Tests', () => {
   let mockSupabaseClient: any
@@ -296,12 +295,8 @@ describe('State.ts Supabase Mock Tests', () => {
         atom({ id: 4, content: 'Task 4', completed: true }) as PrimitiveAtom<Todo>,
         atom({ id: 5, content: 'New Task', completed: false }) as PrimitiveAtom<Todo>,
     ]
-    let mockTodo: Todo
-    let todoAtom: PrimitiveAtom<Todo>
     let todoListAtomSpy
     beforeEach(() => {
-      mockTodo = { id: 1, content: 'Task 1', completed: false }
-      todoAtom = atomWithTodo(mockTodo) as PrimitiveAtom<Todo>
       todoListAtomSpy = jest.spyOn(todoListAtom, "read");
       todoListAtomSpy.mockReturnValue(Promise.resolve(todoAtomList))
     })
@@ -366,7 +361,7 @@ describe('State.ts Supabase Mock Tests', () => {
 
     it('should subscribe to the channel', () => {
 
-      subscribeChannel((payload: RealtimePostgresChangesPayload<Todo>) => {})
+      subscribeChannel(() => {})
         // Handle the payload here
       expect(mockSupabaseClient.from).not.toHaveBeenCalled()
       expect(mockSupabaseClient.select).not.toHaveBeenCalled()

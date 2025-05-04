@@ -1,17 +1,28 @@
 import { useAtomValue } from 'jotai'
 import { filteredTodoListAtom } from './State'
 import TodoItem from './TodoItem'
+import { Suspense } from 'react'
 
-const ItemList = () => {
+const InternalItemList = () => {
   const filterdTodoList = useAtomValue(filteredTodoListAtom)
   return (
-    <div>
+    <>
       {
         filterdTodoList.map((todoItemAtom, index) => (
           <TodoItem key={index} todoItemAtom={todoItemAtom} />
         ))
       }
-    </div>
+    </>
+  )
+}
+
+const ItemList = () => {
+  return (
+    <>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <InternalItemList />
+      </Suspense>
+    </>
   )
 }
 
