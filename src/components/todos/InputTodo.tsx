@@ -1,40 +1,32 @@
 import { useSetAtom } from 'jotai'
-import React, { useRef } from 'react'
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { TodoForm } from './Models'
 import { addTodoListAtom } from './State'
 
 const InputTodo =() => {
   const addTodoList = useSetAtom(addTodoListAtom)
-  const contentRef = useRef<HTMLInputElement>(null);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<TodoForm>();
 
   const isValid: SubmitHandler<TodoForm> = (data: TodoForm) => {
     console.log(data)
 
-    if (contentRef.current) {
-      contentRef.current.value = ''
-    }
+    reset();
     addTodoList(data.content)
   };
 
-  const isInValid: SubmitErrorHandler<TodoForm> = (erros: any) => {
-    console.log('errors: ' + JSON.stringify(erros.content.message));
+  const isInValid: SubmitErrorHandler<TodoForm> = (errors: any) => {
+    console.log('errors: ' + JSON.stringify(errors.content.message))
   };
-
-  const { ref, ...rest } = register('content', { required: "contentを入力してください" });
 
   return (
     <form onSubmit={handleSubmit(isValid, isInValid)} data-testid="form">
 
-      <input {...rest} name="content" placeholder="Type ..." ref={(e) => {
-        ref(e)
-        contentRef.current = e
-      }} />
+      <input {...register('content', { required: "contentを入力してください" })} name="content" placeholder="Type ..."  />
 
       {errors.content && (
         <div
