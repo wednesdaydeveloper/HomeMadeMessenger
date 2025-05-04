@@ -19,8 +19,8 @@ const InputTodo =() => {
     addTodoList(data.content)
   };
 
-  const isInValid: SubmitErrorHandler<TodoForm> = (erros: any) => {
-    console.log('errors: ' + JSON.stringify(erros.content.message))
+  const isInValid: SubmitErrorHandler<TodoForm> = (errors: any) => {
+    console.log('errors: ' + JSON.stringify(errors.content.message))
   };
 
   return (
