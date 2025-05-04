@@ -20,7 +20,7 @@ const TodoItem = ({ todoItemAtom }: TodoItemProps) => {
         onChange={toggleCompleted}
       />
 
-      <span key={todo.id}>
+      <span key={todo.id} data-testid="content">
         {todo.content}
       </span>
     </div>

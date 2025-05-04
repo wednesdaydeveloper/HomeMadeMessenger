@@ -9,3 +9,7 @@ export enum FilterType {
   Completed = 2,
   Incompleted = 3
 }; 
+
+export interface TodoForm {
+  content: string
+}
