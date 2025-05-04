@@ -4,44 +4,28 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
+import { LoginForm } from './models'
+import { SubmitHandler } from 'react-hook-form'
 
-export async function login(formData: FormData) {
+export async function login(formData: LoginForm): Promise<SubmitHandler<LoginForm>> {
   const supabase = await createClient()
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
-
-  const reuslt = await supabase.auth.signInWithPassword(data)
-  console.log('error', JSON.stringify(reuslt.error))
+  const reuslt = await supabase.auth.signInWithPassword(formData)
   if (reuslt.error) {
     redirect('/error')
+  } else {
+    revalidatePath('/', 'layout')
+    redirect('/todolist')
   }
-
-  revalidatePath('/', 'layout')
-  redirect('/')
 }
 
-export async function signup(formData: FormData) {
+export async function signup(formData: LoginForm): Promise<SubmitHandler<LoginForm>> {
   const supabase = await createClient()
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
-
-  const reuslt = await supabase.auth.signUp(data)
-  console.log('error', JSON.stringify(reuslt.error))
+  const reuslt = await supabase.auth.signUp(formData)
 
   if (reuslt.error) {
     redirect('/error')
+  } else {
+    revalidatePath('/', 'layout')
+    redirect('/login')
   }
-
-  revalidatePath('/', 'layout')
-  redirect('/')
 }

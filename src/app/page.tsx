@@ -1,19 +1,13 @@
-import { StrictMode } from 'react'
-import { Provider, createStore } from 'jotai';
-import { countState } from '@/components/counter/State';
-import TodoList from '@/components/todos/TodoList';
+import { createStore } from 'jotai'
+import { countState } from '@/components/counter/State'
 
-const counterStore = createStore();
-counterStore.set(countState, 1000);
+const counterStore = createStore()
+counterStore.set(countState, 1000)
 
 export default function Home() {
   return (
     <div>
-      <StrictMode>
-        <Provider>
-          <TodoList />
-        </Provider>
-      </StrictMode>
+      <h1 className="text-3xl font-bold underline">Hello world!</h1>
     </div>
-  );
+  )
 }

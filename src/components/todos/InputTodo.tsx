@@ -10,18 +10,18 @@ const InputTodo =() => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<TodoForm>();
+  } = useForm<TodoForm>()
 
   const isValid: SubmitHandler<TodoForm> = (data: TodoForm) => {
     console.log(data)
 
-    reset();
+    reset()
     addTodoList(data.content)
-  };
+  }
 
   const isInValid: SubmitErrorHandler<TodoForm> = (errors: any) => {
     console.log('errors: ' + JSON.stringify(errors.content.message))
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit(isValid, isInValid)} data-testid="form">
