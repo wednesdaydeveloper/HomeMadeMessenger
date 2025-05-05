@@ -158,7 +158,7 @@ describe('Login Component', () => {
     // メールアドレスのエラーメッセージが表示されることを確認
     await waitFor(() => {
       expect(screen.getByTestId('email-error').textContent).toBe('')
-      expect(screen.getByTestId('password-error').textContent).toBe('')
+      expect(screen.getByTestId('password-error').textContent).toBe('パスワードは必須です。')
     })
   })
 })
