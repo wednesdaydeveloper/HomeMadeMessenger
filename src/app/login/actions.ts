@@ -9,8 +9,8 @@ import { SubmitHandler } from 'react-hook-form'
 
 const login = async (formData: LoginForm): Promise<SubmitHandler<LoginForm>> =>  {
   const supabase = await createClient()
-  const reuslt = await supabase.auth.signInWithPassword(formData)
-  if (reuslt.error) {
+  const { error }  = await supabase.auth.signInWithPassword(formData)
+  if (error) {
     redirect('/error')
   } else {
     revalidatePath('/', 'layout')
@@ -20,9 +20,9 @@ const login = async (formData: LoginForm): Promise<SubmitHandler<LoginForm>> => 
 
 const signup = async (formData: LoginForm): Promise<SubmitHandler<LoginForm>> => {
   const supabase = await createClient()
-  const reuslt = await supabase.auth.signUp(formData)
+  const { error } = await supabase.auth.signUp(formData)
 
-  if (reuslt.error) {
+  if (error) {
     redirect('/error')
   } else {
     revalidatePath('/', 'layout')
