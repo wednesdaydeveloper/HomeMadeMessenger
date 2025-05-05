@@ -25,7 +25,7 @@ describe('Login Component', () => {
 
 
   const setUp = () => {
-    render(<Login />);
+    render(<Login />)
     const emailInput = screen.getByTestId('email')
     const passwordInput = screen.getByTestId('password')
     const emailError = screen.getByTestId('email-error')
@@ -33,7 +33,7 @@ describe('Login Component', () => {
     const loginButton = screen.getByRole('button',{name:'ログイン'})
     const signupButton = screen.getByRole('button',{name:'登録'})
     return { emailInput, passwordInput, emailError, passwordError, loginButton, signupButton }
-  };
+  }
 
   it('renders the login form correctly', () => {
 
