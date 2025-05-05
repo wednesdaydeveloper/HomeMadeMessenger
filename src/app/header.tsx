@@ -11,7 +11,7 @@ const Header = async () => {
     return user !== null
   }
   return (
-    <header className="text-black hadow-md">
+    <header className="text-black shadow-md">
       <div className="container mx-auto px-3 py-4 flex justify-between items-center">
         {/* メニューバー（画面サイズがlg以上の時) */}
         <nav className="hidden lg:flex space-x-8">
