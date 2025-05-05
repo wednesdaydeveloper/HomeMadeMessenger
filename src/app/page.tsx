@@ -1,9 +1,3 @@
-import { createStore } from 'jotai'
-import { countState } from '@/components/counter/State'
-
-const counterStore = createStore()
-counterStore.set(countState, 1000)
-
 export default function Home() {
   return (
     <div>
