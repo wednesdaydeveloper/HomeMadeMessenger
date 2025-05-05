@@ -14,7 +14,8 @@ const customJestConfig = {
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1"
-  }
+  },
+  testEnvironment: 'jest-fixed-jsdom',
 }
 
 // createJestConfig は、非同期で next/jest が Next.js の設定を読み込めるようにするため、下記のようにエクスポートします

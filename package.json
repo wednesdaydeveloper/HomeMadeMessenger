@@ -14,6 +14,7 @@
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
     "antd": "^5.24.7",
+    "jest-fixed-jsdom": "^0.0.9",
     "jotai": "^2.12.3",
     "next": "15.3.1",
     "react": "^19.0.0",

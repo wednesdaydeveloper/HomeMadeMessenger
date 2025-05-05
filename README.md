@@ -42,3 +42,5 @@ https://github.com/supabase/supabase/tree/master/examples/slack-clone/nextjs-sla
 https://zenn.dev/uhyo/articles/jotai-v2-async-sometimes
 
 https://vercel.com/wednesdaydevelopers-projects/home-made-messenger
+
+https://supabase.com/docs/guides/auth/server-side/nextjs?queryGroups=router&router=app
