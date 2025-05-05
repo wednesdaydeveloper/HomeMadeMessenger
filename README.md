@@ -44,3 +44,7 @@ https://zenn.dev/uhyo/articles/jotai-v2-async-sometimes
 https://vercel.com/wednesdaydevelopers-projects/home-made-messenger
 
 https://supabase.com/docs/guides/auth/server-side/nextjs?queryGroups=router&router=app
+
+https://supabase.com/docs/guides/auth/social-login/auth-google?queryGroups=platform&platform=web&queryGroups=environment&environment=server&queryGroups=framework&framework=nextjs
+
+https://www.youtube.com/watch?v=XgqCh2FwNVY

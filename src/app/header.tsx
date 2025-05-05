@@ -7,7 +7,6 @@ const Header = async () => {
 
   const isLoggedIn = async () => {
     const { data: { user } }: { data: { user: User | null } } = await supabase.auth.getUser()
-    console.log('Header user: ' + JSON.stringify(user))
     return user !== null
   }
   return (
