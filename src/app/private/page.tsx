@@ -6,7 +6,7 @@ const PrivatePage = async () => {
   const { data }: { data: { user: User | null } } = await supabase.auth.getUser()
   return (
     <div>
-      <p>Hello {data.user?.email}</p>
+      <p>Hello {data?.user?.email}</p>
     </div>
   )
 }

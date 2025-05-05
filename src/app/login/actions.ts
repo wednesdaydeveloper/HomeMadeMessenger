@@ -7,7 +7,7 @@ import { createClient } from '@/utils/supabase/server'
 import { LoginForm } from './models'
 import { SubmitHandler } from 'react-hook-form'
 
-export async function login(formData: LoginForm): Promise<SubmitHandler<LoginForm>> {
+const login = async (formData: LoginForm): Promise<SubmitHandler<LoginForm>> =>  {
   const supabase = await createClient()
   const reuslt = await supabase.auth.signInWithPassword(formData)
   if (reuslt.error) {
@@ -18,7 +18,7 @@ export async function login(formData: LoginForm): Promise<SubmitHandler<LoginFor
   }
 }
 
-export async function signup(formData: LoginForm): Promise<SubmitHandler<LoginForm>> {
+const signup = async (formData: LoginForm): Promise<SubmitHandler<LoginForm>> => {
   const supabase = await createClient()
   const reuslt = await supabase.auth.signUp(formData)
 
@@ -29,3 +29,5 @@ export async function signup(formData: LoginForm): Promise<SubmitHandler<LoginFo
     redirect('/login')
   }
 }
+
+export { login, signup }

@@ -2,7 +2,7 @@ import TodoList from '@/components/todos/TodoList'
 import { Provider } from 'jotai'
 import { StrictMode } from 'react'
 
-export default async function TodoListPage() {
+const TodoListPage = () =>  {
   return (
     <StrictMode>
       <Provider>
@@ -11,3 +11,5 @@ export default async function TodoListPage() {
     </StrictMode>
   )
 }
+
+export default TodoListPage
