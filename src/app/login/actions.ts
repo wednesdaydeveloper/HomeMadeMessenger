@@ -46,6 +46,7 @@ const signInWith = (provider: Provider) => async () => {
   if (error) {
     console.error('Error signing in:', error)
   } else {
+    console.error('authUrl: ', authUrl)
     console.error('Redirecting to:', data.url)
     redirect(data.url)
   }
