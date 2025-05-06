@@ -129,7 +129,7 @@ describe('signInWithGoogle', () => {
     })
 
     // 環境変数の設定
-    process.env.VERCEL_URL = 'http://localhost:3210'
+    process.env.VERCEL_URL = 'vercelserver.app:3210'
   })
 
   afterEach(() => {
@@ -139,7 +139,7 @@ describe('signInWithGoogle', () => {
   it('redirects to the OAuth URL on successful sign-in', async () => {
     // `signInWithOAuth` のモックデータを設定
     mockCreateClient().auth.signInWithOAuth.mockResolvedValueOnce({
-      data: { url: 'http://localhost:3210/auth/callback?next=/todolist' },
+      data: { url: 'https://vercelserver.app:3210/auth/callback?next=/todolist' },
       error: null,
     })
 
@@ -150,12 +150,12 @@ describe('signInWithGoogle', () => {
     expect(mockCreateClient().auth.signInWithOAuth).toHaveBeenCalledWith({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3210/auth/callback?next=/todolist',
+        redirectTo: 'https://vercelserver.app:3210/auth/callback?next=/todolist',
       },
     })
 
     // `redirect` が正しい URL で呼び出されたことを確認
-    expect(mockRedirect).toHaveBeenCalledWith('http://localhost:3210/auth/callback?next=/todolist')
+    expect(mockRedirect).toHaveBeenCalledWith('https://vercelserver.app:3210/auth/callback?next=/todolist')
   })
 
   it('redirects to the OAuth URL（VERCEL_URL is undefined） on successful sign-in', async () => {
@@ -197,7 +197,7 @@ describe('signInWithGoogle', () => {
     expect(mockCreateClient().auth.signInWithOAuth).toHaveBeenCalledWith({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3210/auth/callback?next=/todolist',
+        redirectTo: 'https://vercelserver.app:3210/auth/callback?next=/todolist',
       },
     })
 
