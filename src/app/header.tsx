@@ -1,6 +1,7 @@
 import SignOutLink from "@/components/auth/SignOutLink"
 import { createClient } from "@/utils/supabase/server"
 import { User } from "@supabase/supabase-js"
+import lastcommit from "@/lastcommit.json"
 
 const Header = async () => {
   const supabase = await createClient()
@@ -15,6 +16,9 @@ const Header = async () => {
         {/* メニューバー（画面サイズがlg以上の時) */}
         <nav className="hidden lg:flex space-x-8">
           {(await isLoggedIn()) && <SignOutLink />}
+        </nav>
+        <nav className="hidden lg:flex space-x-8">
+          {JSON.stringify(lastcommit)}
         </nav>
       </div>
     </header>
