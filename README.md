@@ -48,3 +48,8 @@ https://supabase.com/docs/guides/auth/server-side/nextjs?queryGroups=router&rout
 https://supabase.com/docs/guides/auth/social-login/auth-google?queryGroups=platform&platform=web&queryGroups=environment&environment=server&queryGroups=framework&framework=nextjs
 
 https://www.youtube.com/watch?v=XgqCh2FwNVY
+
+## URL Configuration にURLパターンを追加
+Supabase の Authentication の URL Configuration の Redirect URLs において、
+認証プロバイダのコールバックURLのパターンをという録する必要あり！
+https://supabase.com/dashboard/project/xvijoffudglkddvssasf/auth/url-configuration
