@@ -5,7 +5,6 @@ import { createClient } from '@/utils/supabase/server'
 import { LoginForm } from './models'
 import { SubmitHandler } from 'react-hook-form'
 import { Provider } from '@supabase/supabase-js'
-import next from 'next'
 
 const login = async (formData: LoginForm): Promise<SubmitHandler<LoginForm>> =>  {
   const supabase = await createClient()
