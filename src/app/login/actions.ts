@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/server'
 import { LoginForm } from './models'
 import { SubmitHandler } from 'react-hook-form'
 import { Provider } from '@supabase/supabase-js'
+import next from 'next'
 
 const login = async (formData: LoginForm): Promise<SubmitHandler<LoginForm>> =>  {
   const supabase = await createClient()
@@ -31,12 +32,15 @@ const signup = async (formData: LoginForm): Promise<SubmitHandler<LoginForm>> =>
 
 const signInWith = (provider: Provider) => async () => {
   const supabase = await createClient()
-  const authUrl = process.env.VERCEL_URL
+  const authUrl = `${process.env.VERCEL_URL}/auth/callback`
   console.log('authUrl: ', authUrl)
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: provider,
     options: {
-      redirectTo: `${authUrl}/auth/callback`
+      redirectTo: authUrl,
+      queryParams: {
+        next: '/todolist',
+      }
     }
   })
 
