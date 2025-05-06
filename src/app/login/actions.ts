@@ -39,18 +39,13 @@ const signInWith = (provider: Provider) => async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: provider,
     options: {
-      redirectTo: authUrl + '/auth/callback',
-      queryParams: {
-        next: '/todolist',
-      }
+      redirectTo: authUrl + '/auth/callback?next=/todolist'
     }
   })
 
   if (error) {
     console.error('Error signing in:', error)
   } else {
-    console.error('authUrl: ', authUrl)
-    console.error('Redirecting to:', data.url)
     redirect(data.url)
   }
 }
