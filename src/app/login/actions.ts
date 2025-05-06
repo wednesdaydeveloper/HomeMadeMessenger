@@ -34,12 +34,16 @@ const signInWith = (provider: Provider) => async () => {
   const authUrl = process.env.VERCEL_URL
   console.log('authUrl: ', authUrl)
   const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: provider
+    provider: provider,
+    options: {
+      redirectTo: `${authUrl}/auth/callback`
+    }
   })
 
   if (error) {
     console.error('Error signing in:', error)
   } else {
+    console.error('Redirecting to:', data.url)
     redirect(data.url)
   }
 }
