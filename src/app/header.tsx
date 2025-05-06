@@ -18,7 +18,10 @@ const Header = async () => {
           {(await isLoggedIn()) && <SignOutLink />}
         </nav>
         <nav className="hidden lg:flex space-x-8">
-          {JSON.stringify(lastcommit)}
+          <div>
+            <p><strong>Commit Hash:</strong> {lastcommit.commit}</p>
+            <p><strong>Date:</strong> {new Date(lastcommit.date).toLocaleString()}</p>
+          </div>
         </nav>
       </div>
     </header>
