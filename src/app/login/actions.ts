@@ -31,15 +31,12 @@ const signup = async (formData: LoginForm): Promise<SubmitHandler<LoginForm>> =>
 
 const signInWith = (provider: Provider) => async () => {
   const supabase = await createClient()
-  const authUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000'
-  
+  const authUrl = `${process.env.VERCEL_UR}/auth/callback?next=/todolist`
   console.log('authUrl: ', authUrl)
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: provider,
     options: {
-      redirectTo: authUrl + '/auth/callback?next=/todolist'
+      redirectTo: authUrl
     }
   })
 
